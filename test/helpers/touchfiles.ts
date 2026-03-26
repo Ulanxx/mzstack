@@ -77,7 +77,7 @@ export const E2E_TOUCHFILES: Record<string, string[]> = {
   'codex-offered-eng-review':    ['plan-eng-review/**', 'scripts/gen-skill-docs.ts'],
 
   // Ship
-  'ship-base-branch': ['ship/**', 'bin/gstack-repo-mode'],
+  'ship-base-branch': ['ship/**', 'bin/mzstack-repo-mode'],
   'ship-local-workflow': ['ship/**', 'scripts/gen-skill-docs.ts'],
 
   // Retro
@@ -85,7 +85,7 @@ export const E2E_TOUCHFILES: Record<string, string[]> = {
   'retro-base-branch': ['retro/**'],
 
   // Global discover
-  'global-discover':   ['bin/gstack-global-discover.ts', 'test/global-discover.test.ts'],
+  'global-discover':   ['bin/mzstack-global-discover.ts', 'test/global-discover.test.ts'],
 
   // CSO
   'cso-full-audit':   ['cso/**'],
@@ -100,18 +100,18 @@ export const E2E_TOUCHFILES: Record<string, string[]> = {
 
   // Codex E2E (tests skills via Codex CLI + worktree)
   'codex-discover-skill':  ['codex/**', '.agents/skills/**', 'test/helpers/codex-session-runner.ts', 'lib/worktree.ts'],
-  'codex-review-findings': ['review/**', '.agents/skills/gstack-review/**', 'codex/**', 'test/helpers/codex-session-runner.ts', 'lib/worktree.ts'],
+  'codex-review-findings': ['review/**', '.agents/skills/mzstack-review/**', 'codex/**', 'test/helpers/codex-session-runner.ts', 'lib/worktree.ts'],
 
   // Gemini E2E (tests skills via Gemini CLI + worktree)
   'gemini-discover-skill':  ['.agents/skills/**', 'test/helpers/gemini-session-runner.ts', 'lib/worktree.ts'],
-  'gemini-review-findings': ['review/**', '.agents/skills/gstack-review/**', 'test/helpers/gemini-session-runner.ts', 'lib/worktree.ts'],
+  'gemini-review-findings': ['review/**', '.agents/skills/mzstack-review/**', 'test/helpers/gemini-session-runner.ts', 'lib/worktree.ts'],
 
 
   // Coverage audit (shared fixture) + triage + gates
-  'ship-coverage-audit': ['ship/**', 'test/fixtures/coverage-audit-fixture.ts', 'bin/gstack-repo-mode'],
+  'ship-coverage-audit': ['ship/**', 'test/fixtures/coverage-audit-fixture.ts', 'bin/mzstack-repo-mode'],
   'review-coverage-audit': ['review/**', 'test/fixtures/coverage-audit-fixture.ts'],
   'plan-eng-coverage-audit': ['plan-eng-review/**', 'test/fixtures/coverage-audit-fixture.ts'],
-  'ship-triage': ['ship/**', 'bin/gstack-repo-mode'],
+  'ship-triage': ['ship/**', 'bin/mzstack-repo-mode'],
 
   // Plan completion audit + verification
   'ship-plan-completion': ['ship/**', 'scripts/gen-skill-docs.ts'],
@@ -127,8 +127,8 @@ export const E2E_TOUCHFILES: Record<string, string[]> = {
   'plan-design-review-no-ui-scope': ['plan-design-review/**', 'scripts/gen-skill-docs.ts'],
   'design-review-fix':              ['design-review/**', 'browse/src/**', 'scripts/gen-skill-docs.ts'],
 
-  // gstack-upgrade
-  'gstack-upgrade-happy-path': ['gstack-upgrade/**'],
+  // mzstack-upgrade
+  'mzstack-upgrade-happy-path': ['mzstack-upgrade/**'],
 
   // Deploy skills
   'land-and-deploy-workflow':   ['land-and-deploy/**', 'scripts/gen-skill-docs.ts'],
@@ -208,6 +208,11 @@ export const E2E_TIERS: Record<string, 'gate' | 'periodic'> = {
   'ship-local-workflow': 'gate',
   'ship-coverage-audit': 'gate',
   'ship-triage': 'gate',
+  'ship-plan-completion': 'gate',
+  'ship-plan-verification': 'gate',
+
+  // Review plan completion
+  'review-plan-completion': 'gate',
 
   // Retro — gate for cheap branch detection, periodic for full Opus retro
   'retro': 'periodic',
@@ -242,8 +247,8 @@ export const E2E_TIERS: Record<string, 'gate' | 'periodic'> = {
   'plan-design-review-no-ui-scope': 'gate',
   'design-review-fix': 'periodic',
 
-  // gstack-upgrade
-  'gstack-upgrade-happy-path': 'gate',
+  // mzstack-upgrade
+  'mzstack-upgrade-happy-path': 'gate',
 
   // Deploy skills
   'land-and-deploy-workflow': 'gate',
@@ -309,7 +314,7 @@ export const LLM_JUDGE_TOUCHFILES: Record<string, string[]> = {
   // Other skills
   'retro/SKILL.md instructions':          ['retro/SKILL.md', 'retro/SKILL.md.tmpl'],
   'qa-only/SKILL.md workflow':            ['qa-only/SKILL.md', 'qa-only/SKILL.md.tmpl'],
-  'gstack-upgrade/SKILL.md upgrade flow': ['gstack-upgrade/SKILL.md', 'gstack-upgrade/SKILL.md.tmpl'],
+  'mzstack-upgrade/SKILL.md upgrade flow': ['mzstack-upgrade/SKILL.md', 'mzstack-upgrade/SKILL.md.tmpl'],
 };
 
 /**

@@ -44,7 +44,7 @@ function extractDescription(content: string): string {
 const ALL_SKILLS = (() => {
   const skills: Array<{ dir: string; name: string }> = [];
   if (fs.existsSync(path.join(ROOT, 'SKILL.md.tmpl'))) {
-    skills.push({ dir: '.', name: 'root gstack' });
+    skills.push({ dir: '.', name: 'root mzstack' });
   }
   for (const entry of fs.readdirSync(ROOT, { withFileTypes: true })) {
     if (!entry.isDirectory() || entry.name.startsWith('.') || entry.name === 'node_modules') continue;
@@ -197,7 +197,7 @@ describe('gen-skill-docs', () => {
   test('generated SKILL.md contains contributor mode check', () => {
     const content = fs.readFileSync(path.join(ROOT, 'SKILL.md'), 'utf-8');
     expect(content).toContain('Contributor Mode');
-    expect(content).toContain('gstack_contributor');
+    expect(content).toContain('mzstack_contributor');
     expect(content).toContain('contributor-logs');
   });
 
@@ -230,7 +230,7 @@ describe('gen-skill-docs', () => {
   test('generated SKILL.md contains telemetry line', () => {
     const content = fs.readFileSync(path.join(ROOT, 'SKILL.md'), 'utf-8');
     expect(content).toContain('skill-usage.jsonl');
-    expect(content).toContain('~/.gstack/analytics');
+    expect(content).toContain('~/.mzstack/analytics');
   });
 
   test('preamble .pending-* glob is zsh-safe (uses find, not shell glob)', () => {
@@ -240,13 +240,13 @@ describe('gen-skill-docs', () => {
       // Must NOT have a bare shell glob ".pending-*" outside of find's -name argument
       expect(content).not.toMatch(/for _PF in [^\n]*\/\.pending-\*/);
       // Must use find to avoid zsh NOMATCH error on glob expansion
-      expect(content).toContain("find ~/.gstack/analytics -maxdepth 1 -name '.pending-*'");
+      expect(content).toContain("find ~/.mzstack/analytics -maxdepth 1 -name '.pending-*'");
     }
   });
 
   test('preamble-using skills have correct skill name in telemetry', () => {
     const PREAMBLE_SKILLS = [
-      { dir: '.', name: 'gstack' },
+      { dir: '.', name: 'mzstack' },
       { dir: 'ship', name: 'ship' },
       { dir: 'review', name: 'review' },
       { dir: 'qa', name: 'qa' },
@@ -426,7 +426,7 @@ describe('REVIEW_DASHBOARD resolver', () => {
   for (const skill of REVIEW_SKILLS) {
     test(`review dashboard appears in ${skill} generated file`, () => {
       const content = fs.readFileSync(path.join(ROOT, skill, 'SKILL.md'), 'utf-8');
-      expect(content).toContain('gstack-review');
+      expect(content).toContain('mzstack-review');
       expect(content).toContain('REVIEW READINESS DASHBOARD');
     });
   }
@@ -847,7 +847,7 @@ describe('Plan status footer in preamble', () => {
     const content = fs.readFileSync(path.join(ROOT, 'office-hours', 'SKILL.md'), 'utf-8');
     expect(content).toContain('Plan Status Footer');
     expect(content).toContain('GSTACK REVIEW REPORT');
-    expect(content).toContain('gstack-review-read');
+    expect(content).toContain('mzstack-review-read');
     expect(content).toContain('ExitPlanMode');
     expect(content).toContain('NO REVIEWS YET');
   });
@@ -923,7 +923,7 @@ describe('DESIGN_SKETCH resolver', () => {
 
 describe('CODEX_SECOND_OPINION resolver', () => {
   const content = fs.readFileSync(path.join(ROOT, 'office-hours', 'SKILL.md'), 'utf-8');
-  const codexContent = fs.readFileSync(path.join(ROOT, '.agents', 'skills', 'gstack-office-hours', 'SKILL.md'), 'utf-8');
+  const codexContent = fs.readFileSync(path.join(ROOT, '.agents', 'skills', 'mzstack-office-hours', 'SKILL.md'), 'utf-8');
 
   test('Phase 3.5 section appears in office-hours SKILL.md', () => {
     expect(content).toContain('Phase 3.5: Cross-Model Second Opinion');
@@ -959,7 +959,7 @@ describe('CODEX_SECOND_OPINION resolver', () => {
     // check for Phase 3.5-specific markers only.
     expect(codexContent).not.toContain('Phase 3.5: Cross-Model Second Opinion');
     expect(codexContent).not.toContain('TMPERR_OH');
-    expect(codexContent).not.toContain('gstack-codex-oh-');
+    expect(codexContent).not.toContain('mzstack-codex-oh-');
   });
 });
 
@@ -1123,13 +1123,13 @@ describe('Codex generation (--host codex)', () => {
   const CODEX_SKILLS = (() => {
     const skills: Array<{ dir: string; codexName: string }> = [];
     if (fs.existsSync(path.join(ROOT, 'SKILL.md.tmpl'))) {
-      skills.push({ dir: '.', codexName: 'gstack' });
+      skills.push({ dir: '.', codexName: 'mzstack' });
     }
     for (const entry of fs.readdirSync(ROOT, { withFileTypes: true })) {
       if (!entry.isDirectory() || entry.name.startsWith('.') || entry.name === 'node_modules') continue;
       if (entry.name === 'codex') continue; // /codex is excluded from Codex output
       if (!fs.existsSync(path.join(ROOT, entry.name, 'SKILL.md.tmpl'))) continue;
-      const codexName = entry.name.startsWith('gstack-') ? entry.name : `gstack-${entry.name}`;
+      const codexName = entry.name.startsWith('mzstack-') ? entry.name : `mzstack-${entry.name}`;
       skills.push({ dir: entry.name, codexName });
     }
     return skills;
@@ -1142,24 +1142,24 @@ describe('Codex generation (--host codex)', () => {
     }
   });
 
-  test('root gstack bundle has OpenAI metadata for Codex skill browsing', () => {
+  test('root mzstack bundle has OpenAI metadata for Codex skill browsing', () => {
     const rootMetadata = path.join(ROOT, 'agents', 'openai.yaml');
     expect(fs.existsSync(rootMetadata)).toBe(true);
     const content = fs.readFileSync(rootMetadata, 'utf-8');
-    expect(content).toContain('display_name: "gstack"');
-    expect(content).toContain('Use $gstack to locate the bundled gstack skills.');
+    expect(content).toContain('display_name: "mzstack"');
+    expect(content).toContain('Use $mzstack to locate the bundled mzstack skills.');
   });
 
-  test('codexSkillName mapping: root is gstack, others are gstack-{dir}', () => {
-    // Root → gstack
-    expect(fs.existsSync(path.join(AGENTS_DIR, 'gstack', 'SKILL.md'))).toBe(true);
-    // Subdirectories → gstack-{dir}
-    expect(fs.existsSync(path.join(AGENTS_DIR, 'gstack-review', 'SKILL.md'))).toBe(true);
-    expect(fs.existsSync(path.join(AGENTS_DIR, 'gstack-ship', 'SKILL.md'))).toBe(true);
-    // gstack-upgrade doesn't double-prefix
-    expect(fs.existsSync(path.join(AGENTS_DIR, 'gstack-upgrade', 'SKILL.md'))).toBe(true);
-    // No double-prefix: gstack-gstack-upgrade must NOT exist
-    expect(fs.existsSync(path.join(AGENTS_DIR, 'gstack-gstack-upgrade', 'SKILL.md'))).toBe(false);
+  test('codexSkillName mapping: root is mzstack, others are mzstack-{dir}', () => {
+    // Root → mzstack
+    expect(fs.existsSync(path.join(AGENTS_DIR, 'mzstack', 'SKILL.md'))).toBe(true);
+    // Subdirectories → mzstack-{dir}
+    expect(fs.existsSync(path.join(AGENTS_DIR, 'mzstack-review', 'SKILL.md'))).toBe(true);
+    expect(fs.existsSync(path.join(AGENTS_DIR, 'mzstack-ship', 'SKILL.md'))).toBe(true);
+    // mzstack-upgrade doesn't double-prefix
+    expect(fs.existsSync(path.join(AGENTS_DIR, 'mzstack-upgrade', 'SKILL.md'))).toBe(true);
+    // No double-prefix: mzstack-mzstack-upgrade must NOT exist
+    expect(fs.existsSync(path.join(AGENTS_DIR, 'mzstack-mzstack-upgrade', 'SKILL.md'))).toBe(false);
   });
 
   test('Codex frontmatter has ONLY name + description', () => {
@@ -1205,16 +1205,16 @@ describe('Codex generation (--host codex)', () => {
   });
 
   test('/codex skill excluded from Codex output', () => {
-    expect(fs.existsSync(path.join(AGENTS_DIR, 'gstack-codex', 'SKILL.md'))).toBe(false);
-    expect(fs.existsSync(path.join(AGENTS_DIR, 'gstack-codex'))).toBe(false);
+    expect(fs.existsSync(path.join(AGENTS_DIR, 'mzstack-codex', 'SKILL.md'))).toBe(false);
+    expect(fs.existsSync(path.join(AGENTS_DIR, 'mzstack-codex'))).toBe(false);
   });
 
   test('Codex review step stripped from Codex-host ship and review', () => {
-    const shipContent = fs.readFileSync(path.join(AGENTS_DIR, 'gstack-ship', 'SKILL.md'), 'utf-8');
+    const shipContent = fs.readFileSync(path.join(AGENTS_DIR, 'mzstack-ship', 'SKILL.md'), 'utf-8');
     expect(shipContent).not.toContain('codex review --base');
     expect(shipContent).not.toContain('CODEX_REVIEWS');
 
-    const reviewContent = fs.readFileSync(path.join(AGENTS_DIR, 'gstack-review', 'SKILL.md'), 'utf-8');
+    const reviewContent = fs.readFileSync(path.join(AGENTS_DIR, 'mzstack-review', 'SKILL.md'), 'utf-8');
     expect(reviewContent).not.toContain('codex review --base');
     expect(reviewContent).not.toContain('CODEX_REVIEWS');
   });
@@ -1253,7 +1253,7 @@ describe('Codex generation (--host codex)', () => {
 
   test('multiline descriptions preserved in Codex output', () => {
     // office-hours has a multiline description — verify it survives the frontmatter transform
-    const content = fs.readFileSync(path.join(AGENTS_DIR, 'gstack-office-hours', 'SKILL.md'), 'utf-8');
+    const content = fs.readFileSync(path.join(AGENTS_DIR, 'mzstack-office-hours', 'SKILL.md'), 'utf-8');
     const fmEnd = content.indexOf('\n---', 4);
     const frontmatter = content.slice(4, fmEnd);
     // Description should span multiple lines (block scalar)
@@ -1264,7 +1264,7 @@ describe('Codex generation (--host codex)', () => {
   });
 
   test('hook skills have safety prose and no hooks: in frontmatter', () => {
-    const HOOK_SKILLS = ['gstack-careful', 'gstack-freeze', 'gstack-guard'];
+    const HOOK_SKILLS = ['mzstack-careful', 'mzstack-freeze', 'mzstack-guard'];
     for (const skillName of HOOK_SKILLS) {
       const content = fs.readFileSync(path.join(AGENTS_DIR, skillName, 'SKILL.md'), 'utf-8');
       // Must have safety advisory prose
@@ -1284,59 +1284,59 @@ describe('Codex generation (--host codex)', () => {
     }
   });
 
-  test('Codex preamble resolves runtime assets from repo-local or global gstack roots', () => {
+  test('Codex preamble resolves runtime assets from repo-local or global mzstack roots', () => {
     // Check a skill that has a preamble (review is a good candidate)
-    const content = fs.readFileSync(path.join(AGENTS_DIR, 'gstack-review', 'SKILL.md'), 'utf-8');
+    const content = fs.readFileSync(path.join(AGENTS_DIR, 'mzstack-review', 'SKILL.md'), 'utf-8');
     expect(content).toContain('GSTACK_ROOT');
-    expect(content).toContain('$_ROOT/.agents/skills/gstack');
-    expect(content).toContain('$GSTACK_BIN/gstack-config');
-    expect(content).toContain('$GSTACK_ROOT/gstack-upgrade/SKILL.md');
-    expect(content).not.toContain('~/.codex/skills/gstack/bin/gstack-config get telemetry');
+    expect(content).toContain('$_ROOT/.agents/skills/mzstack');
+    expect(content).toContain('$GSTACK_BIN/mzstack-config');
+    expect(content).toContain('$MZSTACK_ROOT/mzstack-upgrade/SKILL.md');
+    expect(content).not.toContain('~/.codex/skills/mzstack/bin/mzstack-config get telemetry');
   });
 
   // ─── Path rewriting regression tests ─────────────────────────
 
-  test('sidecar paths point to .agents/skills/gstack/review/ (not gstack-review/)', () => {
-    // Regression: gen-skill-docs rewrote .claude/skills/review → .agents/skills/gstack-review
-    // but setup puts sidecars under .agents/skills/gstack/review/. Must match setup layout.
-    const content = fs.readFileSync(path.join(AGENTS_DIR, 'gstack-review', 'SKILL.md'), 'utf-8');
-    // Correct: references to sidecar files use gstack/review/ path
-    expect(content).toContain('.agents/skills/gstack/review/checklist.md');
-    expect(content).toContain('.agents/skills/gstack/review/design-checklist.md');
-    // Wrong: must NOT reference gstack-review/checklist.md (file doesn't exist there)
-    expect(content).not.toContain('.agents/skills/gstack-review/checklist.md');
-    expect(content).not.toContain('.agents/skills/gstack-review/design-checklist.md');
+  test('sidecar paths point to .agents/skills/mzstack/review/ (not mzstack-review/)', () => {
+    // Regression: gen-skill-docs rewrote .claude/skills/review → .agents/skills/mzstack-review
+    // but setup puts sidecars under .agents/skills/mzstack/review/. Must match setup layout.
+    const content = fs.readFileSync(path.join(AGENTS_DIR, 'mzstack-review', 'SKILL.md'), 'utf-8');
+    // Correct: references to sidecar files use mzstack/review/ path
+    expect(content).toContain('.agents/skills/mzstack/review/checklist.md');
+    expect(content).toContain('.agents/skills/mzstack/review/design-checklist.md');
+    // Wrong: must NOT reference mzstack-review/checklist.md (file doesn't exist there)
+    expect(content).not.toContain('.agents/skills/mzstack-review/checklist.md');
+    expect(content).not.toContain('.agents/skills/mzstack-review/design-checklist.md');
   });
 
-  test('sidecar paths in ship skill point to gstack/review/ for pre-landing review', () => {
-    const content = fs.readFileSync(path.join(AGENTS_DIR, 'gstack-ship', 'SKILL.md'), 'utf-8');
+  test('sidecar paths in ship skill point to mzstack/review/ for pre-landing review', () => {
+    const content = fs.readFileSync(path.join(AGENTS_DIR, 'mzstack-ship', 'SKILL.md'), 'utf-8');
     // Ship references the review checklist in its pre-landing review step
     if (content.includes('checklist.md')) {
-      expect(content).toContain('.agents/skills/gstack/review/');
-      expect(content).not.toContain('.agents/skills/gstack-review/checklist');
+      expect(content).toContain('.agents/skills/mzstack/review/');
+      expect(content).not.toContain('.agents/skills/mzstack-review/checklist');
     }
   });
 
   test('greptile-triage sidecar path is correct', () => {
-    const content = fs.readFileSync(path.join(AGENTS_DIR, 'gstack-review', 'SKILL.md'), 'utf-8');
+    const content = fs.readFileSync(path.join(AGENTS_DIR, 'mzstack-review', 'SKILL.md'), 'utf-8');
     if (content.includes('greptile-triage')) {
-      expect(content).toContain('.agents/skills/gstack/review/greptile-triage.md');
-      expect(content).not.toContain('.agents/skills/gstack-review/greptile-triage');
+      expect(content).toContain('.agents/skills/mzstack/review/greptile-triage.md');
+      expect(content).not.toContain('.agents/skills/mzstack-review/greptile-triage');
     }
   });
 
   test('all four path rewrite rules produce correct output', () => {
     // Test each of the 4 path rewrite rules individually
-    const content = fs.readFileSync(path.join(AGENTS_DIR, 'gstack-review', 'SKILL.md'), 'utf-8');
+    const content = fs.readFileSync(path.join(AGENTS_DIR, 'mzstack-review', 'SKILL.md'), 'utf-8');
 
-    // Rule 1: ~/.claude/skills/gstack → $GSTACK_ROOT
-    expect(content).not.toContain('~/.claude/skills/gstack');
+    // Rule 1: ~/.claude/skills/mzstack → $GSTACK_ROOT
+    expect(content).not.toContain('~/.claude/skills/mzstack');
     expect(content).toContain('$GSTACK_ROOT');
 
-    // Rule 2: .claude/skills/gstack → .agents/skills/gstack
-    expect(content).not.toContain('.claude/skills/gstack');
+    // Rule 2: .claude/skills/mzstack → .agents/skills/mzstack
+    expect(content).not.toContain('.claude/skills/mzstack');
 
-    // Rule 3: .claude/skills/review → .agents/skills/gstack/review
+    // Rule 3: .claude/skills/review → .agents/skills/mzstack/review
     expect(content).not.toContain('.claude/skills/review');
 
     // Rule 4: .claude/skills → .agents/skills (catch-all)
@@ -1350,12 +1350,13 @@ describe('Codex generation (--host codex)', () => {
       // No skill should reference Claude paths
       expect(content).not.toContain('~/.claude/skills');
       expect(content).not.toContain('.claude/skills');
-      if (content.includes('gstack-config') || content.includes('gstack-update-check') || content.includes('gstack-telemetry-log')) {
-        expect(content).toContain('$GSTACK_ROOT');
+      if (content.includes('mzstack-config') || content.includes('mzstack-update-check') || content.includes('mzstack-telemetry-log')) {
+        const hasRoot = content.includes('$GSTACK_ROOT') || content.includes('$MZSTACK_ROOT');
+        expect(hasRoot).toBe(true);
       }
       // If a skill references checklist.md, it must use the correct sidecar path
       if (content.includes('checklist.md') && !content.includes('design-checklist.md')) {
-        expect(content).not.toContain('gstack-review/checklist.md');
+        expect(content).not.toContain('mzstack-review/checklist.md');
       }
     }
   });
@@ -1366,7 +1367,7 @@ describe('Codex generation (--host codex)', () => {
     // Codex changes must NOT affect Claude output
     const content = fs.readFileSync(path.join(ROOT, 'review', 'SKILL.md'), 'utf-8');
     expect(content).toContain('.claude/skills/review/checklist.md');
-    expect(content).toContain('~/.claude/skills/gstack');
+    expect(content).toContain('~/.claude/skills/mzstack');
     // Must NOT contain Codex paths
     expect(content).not.toContain('.agents/skills');
     expect(content).not.toContain('~/.codex/');
@@ -1374,7 +1375,7 @@ describe('Codex generation (--host codex)', () => {
 
   test('Claude output unchanged: ship skill still uses .claude/skills/ paths', () => {
     const content = fs.readFileSync(path.join(ROOT, 'ship', 'SKILL.md'), 'utf-8');
-    expect(content).toContain('~/.claude/skills/gstack');
+    expect(content).toContain('~/.claude/skills/mzstack');
     expect(content).not.toContain('.agents/skills');
     expect(content).not.toContain('~/.codex/');
   });
@@ -1383,8 +1384,8 @@ describe('Codex generation (--host codex)', () => {
     for (const skill of ALL_SKILLS) {
       const content = fs.readFileSync(path.join(ROOT, skill.dir, 'SKILL.md'), 'utf-8');
       expect(content).not.toContain('~/.codex/');
-      // gstack-upgrade legitimately references .agents/skills for cross-platform detection
-      if (skill.dir !== 'gstack-upgrade') {
+      // mzstack-upgrade legitimately references .agents/skills for cross-platform detection
+      if (skill.dir !== 'mzstack-upgrade') {
         expect(content).not.toContain('.agents/skills');
       }
     }
@@ -1393,12 +1394,12 @@ describe('Codex generation (--host codex)', () => {
   // ─── Design outside voices: Codex host guard ─────────────────
 
   test('codex host produces empty outside voices in design-review', () => {
-    const codexContent = fs.readFileSync(path.join(AGENTS_DIR, 'gstack-design-review', 'SKILL.md'), 'utf-8');
+    const codexContent = fs.readFileSync(path.join(AGENTS_DIR, 'mzstack-design-review', 'SKILL.md'), 'utf-8');
     expect(codexContent).not.toContain('Design Outside Voices');
   });
 
   test('codex host does not include Codex design block in ship', () => {
-    const codexContent = fs.readFileSync(path.join(AGENTS_DIR, 'gstack-ship', 'SKILL.md'), 'utf-8');
+    const codexContent = fs.readFileSync(path.join(AGENTS_DIR, 'mzstack-ship', 'SKILL.md'), 'utf-8');
     expect(codexContent).not.toContain('Codex design voice');
   });
 });
@@ -1437,7 +1438,7 @@ describe('setup script validation', () => {
     expect(codexSection).toContain('create_codex_runtime_root');
     expect(codexSection).toContain('link_codex_skill_dirs');
     expect(codexSection).not.toContain('link_claude_skill_dirs');
-    expect(codexSection).not.toContain('ln -snf "$GSTACK_DIR" "$CODEX_GSTACK"');
+    expect(codexSection).not.toContain('ln -snf "$MZSTACK_DIR" "$CODEX_GSTACK"');
   });
 
   test('Codex install prefers repo-local .agents/skills when setup runs from there', () => {
@@ -1449,16 +1450,16 @@ describe('setup script validation', () => {
   });
 
   test('setup separates install path from source path for symlinked repo-local installs', () => {
-    expect(setupContent).toContain('INSTALL_GSTACK_DIR=');
-    expect(setupContent).toContain('SOURCE_GSTACK_DIR=');
+    expect(setupContent).toContain('INSTALL_MZSTACK_DIR=');
+    expect(setupContent).toContain('SOURCE_MZSTACK_DIR=');
     expect(setupContent).toContain('INSTALL_SKILLS_DIR=');
-    expect(setupContent).toContain('CODEX_GSTACK="$INSTALL_GSTACK_DIR"');
-    expect(setupContent).toContain('link_codex_skill_dirs "$SOURCE_GSTACK_DIR" "$CODEX_SKILLS"');
+    expect(setupContent).toContain('CODEX_MZSTACK="$INSTALL_MZSTACK_DIR"');
+    expect(setupContent).toContain('link_codex_skill_dirs "$SOURCE_MZSTACK_DIR" "$CODEX_SKILLS"');
   });
 
   test('Codex installs always create sidecar runtime assets for the real skill target', () => {
     expect(setupContent).toContain('if [ "$INSTALL_CODEX" -eq 1 ]; then');
-    expect(setupContent).toContain('create_agents_sidecar "$SOURCE_GSTACK_DIR"');
+    expect(setupContent).toContain('create_agents_sidecar "$SOURCE_MZSTACK_DIR"');
   });
 
   test('link_codex_skill_dirs reads from .agents/skills/', () => {
@@ -1467,15 +1468,15 @@ describe('setup script validation', () => {
     const fnEnd = setupContent.indexOf('}', setupContent.indexOf('linked[@]}', fnStart));
     const fnBody = setupContent.slice(fnStart, fnEnd);
     expect(fnBody).toContain('.agents/skills');
-    expect(fnBody).toContain('gstack*');
+    expect(fnBody).toContain('mzstack*');
   });
 
   test('link_claude_skill_dirs creates relative symlinks', () => {
-    // Claude links should be relative: ln -snf "gstack/skill_name"
+    // Claude links should be relative: ln -snf "mzstack/skill_name"
     const fnStart = setupContent.indexOf('link_claude_skill_dirs()');
     const fnEnd = setupContent.indexOf('}', setupContent.indexOf('linked[@]}', fnStart));
     const fnBody = setupContent.slice(fnStart, fnEnd);
-    expect(fnBody).toContain('ln -snf "gstack/$skill_name"');
+    expect(fnBody).toContain('ln -snf "mzstack/$skill_name"');
   });
 
   test('setup supports --host auto|claude|codex|kiro', () => {
@@ -1489,17 +1490,17 @@ describe('setup script validation', () => {
     expect(setupContent).toContain('command -v kiro-cli');
   });
 
-  // T1: Sidecar skip guard — prevents .agents/skills/gstack from being linked as a skill
-  test('link_codex_skill_dirs skips the gstack sidecar directory', () => {
+  // T1: Sidecar skip guard — prevents .agents/skills/mzstack from being linked as a skill
+  test('link_codex_skill_dirs skips the mzstack sidecar directory', () => {
     const fnStart = setupContent.indexOf('link_codex_skill_dirs()');
     const fnEnd = setupContent.indexOf('}', setupContent.indexOf('done', fnStart));
     const fnBody = setupContent.slice(fnStart, fnEnd);
-    expect(fnBody).toContain('[ "$skill_name" = "gstack" ] && continue');
+    expect(fnBody).toContain('[ "$skill_name" = "mzstack" ] && continue');
   });
 
   // T2: Dynamic $GSTACK_ROOT paths in generated Codex preambles
   test('generated Codex preambles use dynamic GSTACK_ROOT paths', () => {
-    const codexSkillDir = path.join(ROOT, '.agents', 'skills', 'gstack-ship');
+    const codexSkillDir = path.join(ROOT, '.agents', 'skills', 'mzstack-ship');
     if (!fs.existsSync(codexSkillDir)) return; // skip if .agents/ not generated
     const content = fs.readFileSync(path.join(codexSkillDir, 'SKILL.md'), 'utf-8');
     expect(content).toContain('GSTACK_ROOT=');
@@ -1511,7 +1512,7 @@ describe('setup script validation', () => {
     expect(setupContent).toContain('INSTALL_KIRO=');
     expect(setupContent).toContain('kiro-cli');
     expect(setupContent).toContain('KIRO_SKILLS=');
-    expect(setupContent).toContain('~/.kiro/skills/gstack');
+    expect(setupContent).toContain('~/.kiro/skills/mzstack');
   });
 
   test('create_agents_sidecar links runtime assets', () => {
@@ -1529,21 +1530,21 @@ describe('setup script validation', () => {
     const fnStart = setupContent.indexOf('create_codex_runtime_root()');
     const fnEnd = setupContent.indexOf('}', setupContent.indexOf('done', setupContent.indexOf('review/', fnStart)));
     const fnBody = setupContent.slice(fnStart, fnEnd);
-    expect(fnBody).toContain('gstack/SKILL.md');
+    expect(fnBody).toContain('mzstack/SKILL.md');
     expect(fnBody).toContain('browse/dist');
     expect(fnBody).toContain('browse/bin');
-    expect(fnBody).toContain('gstack-upgrade/SKILL.md');
+    expect(fnBody).toContain('mzstack-upgrade/SKILL.md');
     // Review runtime assets (individual files, not the whole dir)
     expect(fnBody).toContain('checklist.md');
     expect(fnBody).toContain('design-checklist.md');
     expect(fnBody).toContain('greptile-triage.md');
     expect(fnBody).toContain('TODOS-format.md');
-    expect(fnBody).not.toContain('ln -snf "$gstack_dir" "$codex_gstack"');
+    expect(fnBody).not.toContain('ln -snf "$mzstack_dir" "$codex_mzstack"');
   });
 
-  test('direct Codex installs are migrated out of ~/.codex/skills/gstack', () => {
+  test('direct Codex installs are migrated out of ~/.codex/skills/mzstack', () => {
     expect(setupContent).toContain('migrate_direct_codex_install');
-    expect(setupContent).toContain('$HOME/.gstack/repos/gstack');
+    expect(setupContent).toContain('$HOME/.mzstack/repos/mzstack');
     expect(setupContent).toContain('avoid duplicate skill discovery');
   });
 });
@@ -1555,22 +1556,22 @@ describe('telemetry', () => {
     expect(content).toContain('_SESSION_ID');
     expect(content).toContain('TELEMETRY:');
     expect(content).toContain('TEL_PROMPTED:');
-    expect(content).toContain('gstack-config get telemetry');
+    expect(content).toContain('mzstack-config get telemetry');
   });
 
   test('generated SKILL.md contains telemetry opt-in prompt', () => {
     const content = fs.readFileSync(path.join(ROOT, 'SKILL.md'), 'utf-8');
     expect(content).toContain('.telemetry-prompted');
-    expect(content).toContain('Help gstack get better');
-    expect(content).toContain('gstack-config set telemetry community');
-    expect(content).toContain('gstack-config set telemetry anonymous');
-    expect(content).toContain('gstack-config set telemetry off');
+    expect(content).toContain('Help mzstack get better');
+    expect(content).toContain('mzstack-config set telemetry community');
+    expect(content).toContain('mzstack-config set telemetry anonymous');
+    expect(content).toContain('mzstack-config set telemetry off');
   });
 
   test('generated SKILL.md contains telemetry epilogue', () => {
     const content = fs.readFileSync(path.join(ROOT, 'SKILL.md'), 'utf-8');
     expect(content).toContain('Telemetry (run last)');
-    expect(content).toContain('gstack-telemetry-log');
+    expect(content).toContain('mzstack-telemetry-log');
     expect(content).toContain('_TEL_END');
     expect(content).toContain('_TEL_DUR');
     expect(content).toContain('SKILL_NAME');
