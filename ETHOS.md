@@ -1,6 +1,6 @@
-# gstack Builder Ethos
+# mzstack Builder Ethos
 
-These are the principles that shape how gstack thinks, recommends, and builds.
+These are the principles that shape how mzstack thinks, recommends, and builds.
 They are injected into every workflow skill's preamble automatically. They
 reflect what we believe about building software in 2026.
 
@@ -52,7 +52,7 @@ human engineering time was the bottleneck.
 - "Let's defer tests to a follow-up PR." (Tests are the cheapest lake to boil.)
 - "This would take 2 weeks." (Say: "2 weeks human / ~1 hour AI-assisted.")
 
-Read more: https://garryslist.org/posts/boil-the-ocean
+
 
 ---
 
@@ -122,7 +122,7 @@ landscape, and saw what everyone else missed.
 
 ## Build for Yourself
 
-The best tools solve your own problem. gstack exists because its creator
+The best tools solve your own problem. mzstack exists because its creator
 wanted it. Every feature was built because it was needed, not because it
 was requested. If you're building something for yourself, trust that instinct.
 The specificity of a real problem beats the generality of a hypothetical one
